@@ -18,3 +18,13 @@ Once this is done, the user's latest 200 tweets are scraped from their timeline 
 These tweets are fed into [markovify](https://github.com/jsvine/markovify) in order to generate a new tweet.
 
 The tweet is then sent as a reply to the user's most recent post.
+
+### What's `trump.sh`?
+
+Scripts that use Twitter's Streaming API don't stop running.
+
+I don't want to run these types of script as a cronjob becuause I'll end up with a ton of proccesses running the same script simultaneously - probably sending too many tweets and potentially locking the account.
+
+`trump.sh` is a bash script that I set up as a cron job on my server to check if `trump.py` is still running.
+
+If the bot is running, it exits. If the bot is not running it starts the bot. Simple.
