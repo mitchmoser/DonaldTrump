@@ -4,6 +4,6 @@ var=$(pgrep -f trump.py)
 # if it is not, start it
 if [[ ! "$var" ]]
 then
-	python3 /path/to/file/trump.py
+	python3 /path/to/file/trump.py &
 fi
 exit 0
