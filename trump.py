@@ -51,9 +51,10 @@ class MyStreamListener(tweepy.StreamListener):
                         tweet = tweet + "."
                     mark += tweet + " "
 
-            # generate new sentences until within 140 characters w/ url
+            # generate new sentence
             text_model = markovify.Text(mark)
             tweet = text_model.make_sentence()
+            
             # some sentences get generated with leading punctuation
             if tweet[0] in string.punctuation:
                 tweet = tweet[1:].strip()
