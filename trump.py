@@ -28,10 +28,13 @@ class MyStreamListener(tweepy.StreamListener):
         reply = jsonStr['id']
         if jsonStr['user']['id'] == int(twitterID):
             # get the account's @username
-            handle = "@" + jsonStr['user']['screen_name'] + " "
+            username = jsonStr['user']['screen_name']
+            handle = "@" + username + " "
             # get most recent tweets from profile (200 is max allowed)
-            timeline = api.user_timeline(screen_name = 'realDonaldTrump', count = 200, tweet_mode="extended", include_rts = False)
-
+            timeline = api.user_timeline(screen_name = username,
+                                         count = 200,
+                                         tweet_mode="extended",
+                                         include_rts = False)
             mark = ""
 
             for data in timeline:
@@ -40,15 +43,27 @@ class MyStreamListener(tweepy.StreamListener):
                 load = json.loads(bulk)
                 tweet = html.unescape(load['full_text'])
                 # remove hyperlinks from tweets
-                tweet = re.sub(r'https?:\/\/.*[\r\n]*', '', tweet.strip())
-                # ensure tweets end in punctuation
-                if tweet[-1] not in string.punctuation:
-                    tweet = tweet + "."
-                mark += tweet + " "
+                tweet = re.sub(r'https?:\/\/.[^\s]*','', tweet.strip())
+                # ensure tweet wasn't just a link (and now empty)
+                if tweet:
+                    # ensure tweet ends in punctuation
+                    if tweet[-1] not in string.punctuation:
+                        tweet = tweet + "."
+                    mark += tweet + " "
 
+            # generate new sentences until within 140 characters w/ url
             text_model = markovify.Text(mark)
             tweet = text_model.make_sentence()
+            # some sentences get generated with leading punctuation
+            if tweet[0] in string.punctuation:
+                tweet = tweet[1:].strip()
+
+            # reply directly to tweet
             api.update_status(handle + tweet, in_reply_to_status_id = reply)
+
+            # quote the tweet in a new tweet
+            url = "\nhttps://twitter.com/" + username + "/status/" + reply
+            api.update_status(tweet + url)
 
     def on_error(self, status_code):
         print('Error: ' + repr(status_code))
