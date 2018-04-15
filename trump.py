@@ -62,10 +62,6 @@ class MyStreamListener(tweepy.StreamListener):
             # reply directly to tweet
             api.update_status(handle + tweet, in_reply_to_status_id = reply)
 
-            # quote the tweet in a new tweet
-            url = "\nhttps://twitter.com/" + username + "/status/" + reply
-            api.update_status(tweet + url)
-
     def on_error(self, status_code):
         print('Error: ' + repr(status_code))
         return False
