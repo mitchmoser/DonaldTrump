@@ -1,7 +1,5 @@
-# Donald J Trump
+# Donald J Trump [@reelDonnyDrumpf](https://twitter.com/reelDonnyDrumpf)
 This bot that interacts with Twitter's Streaming API and automatically replies to a user's posts.
-
-## Check It Out [Here](https://twitter.com/reelDonnyDrumpf/with_replies)
 
 ### How It Works
 
