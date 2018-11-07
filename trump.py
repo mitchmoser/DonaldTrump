@@ -54,13 +54,21 @@ class MyStreamListener(tweepy.StreamListener):
             # generate new sentence
             text_model = markovify.Text(mark)
             tweet = text_model.make_sentence()
-            
+
             # some sentences get generated with leading punctuation
             if tweet[0] in string.punctuation:
                 tweet = tweet[1:].strip()
 
+            # end tweets with #MAGA
+            tweet += "\n#MAGA"
+
             # reply directly to tweet
             api.update_status(handle + tweet, in_reply_to_status_id = reply)
+
+            # reinstantiate bot object to get newest reply
+            bot = api.me()
+            # retweet latest reply to add it to main feed
+            bot.status.retweet()
 
     def on_error(self, status_code):
         print('Error: ' + repr(status_code))
