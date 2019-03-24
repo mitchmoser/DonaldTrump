@@ -9,6 +9,10 @@ Twitter assigns a unique numerical ID to every user and every tweet.
 
 The stream object's filter can be set to a user's ID; this will only display tweets by or tagging that user's account.
 
+This script can be set to filter on several users by adding multiple IDs to the `twitterID` list.
+
+Reference resources such as [TweeterID](https://tweeterid.com) to retrieve user IDs.
+
 To filter content to only tweets *by the user*, incoming user IDs are parsed and compared to the desired user ID.
 
 Once this is done, the user's latest 200 tweets are scraped from their timeline and packed into a string variable.
