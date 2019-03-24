@@ -17,7 +17,7 @@ auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
 # @realDonaldTrump's twitter ID is 25073877
-twitterID = '25073877'
+twitterID = ['25073877']
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, status):
@@ -26,7 +26,7 @@ class MyStreamListener(tweepy.StreamListener):
         jsonStr = json.loads(dump)
         # get numeric ID of tweet for reply
         reply = jsonStr['id']
-        if jsonStr['user']['id'] == int(twitterID):
+        if str(jsonStr['user']['id']) in twitterID:
             # get the account's @username
             username = jsonStr['user']['screen_name']
             handle = "@" + username + " "
@@ -76,4 +76,4 @@ class MyStreamListener(tweepy.StreamListener):
 
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth = api.auth, listener=myStreamListener)
-myStream.filter(follow=[twitterID]) # filter stream on user's unique numeric ID
+myStream.filter(follow=twitterID) # filter stream on user's unique numeric ID
